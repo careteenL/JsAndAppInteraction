@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="bridge.js"></script>
+</head>
+<body>
+<div style="margin-top: 200px">
+    <input type="button" value="follow" onclick="follow()">
+    <input type="button" value="comment" onclick="comment()">
+</div>
+<script>
+    
+function follow() {
+    //window.webkit.messageHandlers.follow.postMessage('1')
+    HFWVBridge.runNative('follow', {id: '1'})
+}
+
+function comment() {
+    //window.webkit.messageHandlers.comment.postMessage('2')
+    HFWVBridge.runNative('comment', {id: '2'})
+}
+
+</script>
+</body>
+</html>

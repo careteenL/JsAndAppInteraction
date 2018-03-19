@@ -17,7 +17,7 @@ Android端使用`JSBridge`（第三方库）
 
 ## JS端
 
-见 https://github.com/careteenL/JsAndAppInteraction/index.html
+见 https://github.com/careteenL/JsAndAppInteraction/blob/master/index.html
 
 支持带参数、带参数且回调
 
@@ -48,11 +48,11 @@ JS针对Android端
 ...
 ```
 
-核心封装代码 https://github.com/careteenL/JsAndAppInteraction/bridge.js
+核心封装代码 https://github.com/careteenL/JsAndAppInteraction/blob/master/bridge.js
 
 ## IOS端
 
-见 https://github.com/careteenL/JsAndAppInteraction/BaseWKWebViewController.swift
+见 https://github.com/careteenL/JsAndAppInteraction/blob/master/BaseWKWebViewController.swift
 
 ## Android端
 

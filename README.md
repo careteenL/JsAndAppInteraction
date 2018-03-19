@@ -55,12 +55,14 @@ JS针对Android端
 见 https://github.com/careteenL/JsAndAppInteraction/blob/master/BaseWKWebViewController.swift
 
 ## Android端
-
+```
+...
+```
 # 优点及缺点
 
 ## 优点
 
-- 一定段不需要再拦截跳转链接，硬编码减少。
+- 移动端不需要再拦截跳转链接，硬编码减少。
 - 支持双向回调，支持异步回调。
 - 安全性高
 
@@ -71,6 +73,4 @@ JS针对Android端
 
 # 总结
 
-天才从不犯错，所谓的“错”都是有意为之，不过是为了开启发现大门。
-
-                                                -- 犯了错别慌
+天才从不犯错，所谓的“错”都是有意为之，不过是为了开启发现大门。  -- 犯了错别慌

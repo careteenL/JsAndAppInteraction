@@ -26,12 +26,13 @@ HTML
 <button id="btn">模拟调用登录带参数和回调</button>
 ```
 
-JS针对IOS端
+使用方式
 ```js
 require('bridge.js')
-
+// 需要和客户端同学提前约定好相互调用的方法名及参数及回调
 HFWVBridge.wrapNativeFn(['login']);
 document.getElementById('btn').onclick = function() {
+    // 然后触发调用App的方法，传参和回调为可选项
     HFWVBridge.runNative('login', {
         name: '搜狐网友'
     }, function() {
@@ -43,11 +44,6 @@ HFWVBridge.add('hideBtn',function(){
 });
 ```
 
-JS针对Android端
-```js
-...
-```
-
 核心封装代码 https://github.com/careteenL/JsAndAppInteraction/blob/master/bridge.js
 
 ## IOS端
@@ -56,7 +52,7 @@ JS针对Android端
 
 ## Android端
 ```
-...
+原理同ios
 ```
 # 优点及缺点
 

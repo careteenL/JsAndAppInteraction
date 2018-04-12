@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>CSS</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <script src="bridge.js"></script>
+
+</head>
+
+<body>
+    <div style="margin-top: 200px">
+        <button onclick="HFWVBridge.runNative('login')">模拟调用登录不带参数</button>
+        <button onclick="NativeApp.login()">模拟调用登录</button>
+        <button id="btn">模拟调用登录带参数和回调</button>
+    </div>
+
+    <script>
+
+        /**
+         *
+         * @desc 判断是否在 FocusApp_iOS 环境下，特殊字符由客户端约定。
+         * @return {Boolean}
+         */
+        var isFocusAppIOS =  function () {
+            var userAgent = 'navigator' in window && 'userAgent' in navigator && navigator.userAgent.toLowerCase() || '';
+            return /focusapp_ios/i.test(userAgent);
+        }
+        // 模拟NativeApp接口
+        /*
+        var NativeApp = {
+            login: function(jsonString) {
+                var json = JSON.parse(jsonString);
+                alert('欢迎！！！' + (json.name || ''));
+                if (json.cb) {
+                    HFWVBridge.runJS(json.cb);
+                }
+                HFWVBridge.runJS('hideBtn');
+            }
+        };
+         */
+        // 包裹所需要用到的函数
+        HFWVBridge.wrapNativeFn(['login']);
+        document.getElementById('btn').onclick = function() {
+            // Android端如果使用 NativeApp 方式，HFWVBridge 即可；
+            // 如果没有而是使用 WebViewJavascriptBridge ，则使用 window.WebViewJavascriptBridge.callHandler
+            if (isFocusAppIOS()) {
+                HFWVBridge.runNative('login', {
+                    name: '搜狐网友'
+                }, function() {
+                    alert('欢迎来到搜狐');
+                })
+            } else {
+                /**
+                 *
+                 * @desc 方式一：发送消息给app
+                 * @param {Any} 发送的消息
+                 * @param {Function} 发送消息给app后的的回调，且能拿到app返回的数据
+                 */
+                var data = {id: 1, content: "这是一个图片 <img src=\"a.png\"/> test\r\nhahaha"};
+                window.WebViewJavascriptBridge.send(
+                    data
+                    , function(responseData) {
+                        document.getElementById("show").innerHTML = "repsonseData from java, data = " + responseData
+                    }
+                );
+
+                /**
+                 *
+                 * @desc 方式二：调用app的方法
+                 * @param {String} 与客户端事先约定好的调用方法名
+                 * @param {Object} 调用app方法的传参
+                 * @param {Function} 调用app方法的的回调，且能拿到app返回的数据
+                 */
+                window.WebViewJavascriptBridge.callHandler(
+                    'submitFromWeb'
+                    , {'param': '中文测试'}
+                    , function(responseData) {
+                        document.getElementById("show").innerHTML = "send get responseData from java, data = " + responseData
+                    }
+                );
+            }
+        };
+        HFWVBridge.add('hideBtn',function(){
+            document.getElementById('btn').style.display = 'none';
+        });
+
+    </script>
+</body>
+
+</html>

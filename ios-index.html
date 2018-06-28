@@ -59,8 +59,8 @@
                 /**
                  *
                  * @desc 方式一：发送消息给app
-                 * @param {Any} 发送的消息
-                 * @param {Function} 发送消息给app后的的回调，且能拿到app返回的数据
+                 * @param {Any} data 发送的消息
+                 * @param {Function} callback 发送消息给app后的的回调，且能拿到app返回的数据
                  */
                 var data = {id: 1, content: "这是一个图片 <img src=\"a.png\"/> test\r\nhahaha"};
                 window.WebViewJavascriptBridge.send(
@@ -73,9 +73,9 @@
                 /**
                  *
                  * @desc 方式二：调用app的方法
-                 * @param {String} 与客户端事先约定好的调用方法名
-                 * @param {Object} 调用app方法的传参
-                 * @param {Function} 调用app方法的的回调，且能拿到app返回的数据
+                 * @param {String} name 与客户端事先约定好的调用方法名
+                 * @param {Object} params 调用app方法的传参
+                 * @param {Function} callback 调用app方法的的回调，且能拿到app返回的数据
                  */
                 window.WebViewJavascriptBridge.callHandler(
                     'submitFromWeb'

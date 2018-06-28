@@ -1,4 +1,16 @@
+/**
+ *
+ * @desc 当前项目组客户端 IOS 使用 webkit MessageHandler ，
+ *                     Android 使用 WebViewJavascriptBridge 。
+ *          所以贴出两份代码，兼容两端。
+ * @author Careteen
+ */
+
 ~ function(w) {
+	/**
+	 *
+	 * @desc 方案之一：webkit MessageHandler
+	 */
 	var nativeObject = 'NativeApp'; // 原生注入的对象
 	var ts = +new Date(); // 匿名回调基础时间戳
 	var callbacks = {}; // 回调
@@ -92,7 +104,11 @@
 			}
 		}
 	}
-	// Android
+
+	/**
+	 *
+	 * @desc 方案之二：WebViewJavascriptBridge
+	 */
 	function connectWebViewJavascriptBridge(callback) {
 		if (window.WebViewJavascriptBridge) {
 			callback(WebViewJavascriptBridge)
@@ -106,7 +122,6 @@
 			);
 		}
 	}
-
 	connectWebViewJavascriptBridge(function(bridge) {
 		bridge.init(function(message, responseCallback) {
 			console.log('JS got a message', message);
@@ -119,7 +134,7 @@
 				responseCallback(data);
 			}
 		});
-        // 通过 registerHandler 注册app端所需要调用的方法
+		// 通过 registerHandler 注册app端所需要调用的方法
 		bridge.registerHandler("functionInJs", function(data, responseCallback) {
 			document.getElementById("show").innerHTML = ("data from Java: = " + data);
 			if (responseCallback) {

@@ -7,23 +7,31 @@ APP内嵌H5页面中JS和APP的交互，可传参，可回调
 
 一定会有APP和JS的交互场景，例如JS唤起APP并携带参数...
 
-## 交互方式
+### 交互方式
 
-### 方法一：app端拦截和h5端约定好的特定url
+#### 方法一：app端拦截和h5端约定好的特定url
 
 ```js
 // 不带参
-window.location.href = 'https://jingjiren.focus.cn/backtoapp'
+window.location.href = 'https://xxx.focus.cn/backtoapp'
 // 带参
-window.location.href = 'https://jingjiren.focus.cn/backtoapp?data=xxx'
+window.location.href = 'https://xxx.focus.cn/backtoapp?data=xxx'
 ```
 存在的问题：只解决了js调用原生的问题。至于调用的结果和调用完之后要进行一些页面的回调，通过这个拦截url的方式是没办法进行的。
 
-### 方法二：使用[WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge)
+#### 方法二：使用[WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge)
 
-本质上，它是通过webview的代理拦截scheme，然后注入相应的JS。
+本质上，它是通过`webview`的代理拦截`scheme`，然后注入相应的`JS`。
 
-## 使用WebViewJavascriptBridge
+#### 方法三：使用 `webkit MessageHandler`
+
+原理同 `WebViewJavascriptBridge`
+
+### 本库
+
+本库主要使用 `WebViewJavascriptBridge` 和 `webkit MessageHandler`进行封装。
+
+## 使用 `WebViewJavascriptBridge` 和 `webkit MessageHandler`
 
 ### APP端
 
@@ -33,7 +41,7 @@ window.location.href = 'https://jingjiren.focus.cn/backtoapp?data=xxx'
 
 ### H5端
 
-**原理：** H5页面 <--> Native App执行被调用Native代码返回调用结果（H5页面执行被调用JavaScript代码并返回调用结果）
+**原理：** H5页面 <--> `Native App`执行被调用`Native`代码返回调用结果（H5页面执行被调用JavaScript代码并返回调用结果）
 
 **封装** [bridge.js](https://github.com/careteenL/JsAndAppInteraction/blob/master/bridge.js)。
 
@@ -49,7 +57,7 @@ require('/path/to/bridge.js');
 // 需要和客户端同学提前约定好相互调用的方法名及参数及回调，包裹所需要用到的函数
 HFWVBridge.wrapNativeFn(['login']);
 document.getElementById('btn').onclick = function() {
-    // Android端如果使用 NativeApp 方式，HFWVBridge 即可；
+    // Android端如果使用 messageHandlers 方式，HFWVBridge 即可；
     // 如果没有而是使用 WebViewJavascriptBridge ，则使用 window.WebViewJavascriptBridge.callHandler
     if (isFocusAppIOS()) {
         HFWVBridge.runNative('login', {
@@ -104,10 +112,14 @@ HFWVBridge.add('hideBtn',function(){
 ### 缺点
 
 - 只支持回调，不支持return
-- JS、IOS、Android三端代码初始化较多，也比较复杂。需要一个全栈大佬，出现问题能及时修复。
+- JS、IOS、Android三端代码初始化较多，也比较复杂。需要一个全端大佬，出现问题能及时修复。
 
 ## 引用
 
 - [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge)
 
 - [WebViewJavascriptBridge的详细使用 -简书](https://www.jianshu.com/p/ba6358b1eec3)
+
+- [iOS下JS与OC互相调用（三）--MessageHandler -简书](https://www.jianshu.com/p/433e59c5a9eb)
+
+- [js 向 Native 一句话传值并反射出 Swift 对象执行指定函数](https://lvwenhan.com/ios/461.html)

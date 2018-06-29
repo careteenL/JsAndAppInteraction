@@ -17,7 +17,11 @@ window.location.href = 'https://xxx.focus.cn/backtoapp'
 // 带参
 window.location.href = 'https://xxx.focus.cn/backtoapp?data=xxx'
 ```
-存在的问题：只解决了js调用原生的问题。至于调用的结果和调用完之后要进行一些页面的回调，通过这个拦截url的方式是没办法进行的。
+存在的问题：
+- 有些方案为了规避 url 长度隐患的缺陷，在 iOS 上采用了使用 Ajax 发送同域请求的方式，并将参数放到 head 或 body 里。这样，虽然规避了 url 长度的隐患，但是 WKWebView 并不支持这样的方式。
+- 为什么选择 iframe.src 不选择 locaiton.href ？因为如果通过 location.href 连续调用 Native，很容易丢失一些调用。
+- 连续多次修改window.location.href的值，在Native层只能接收到最后一次请求，前面的请求都会被忽略掉。
+- 只解决了js调用原生的问题。至于调用的结果和调用完之后要进行一些页面的回调，通过这个拦截url的方式是没办法进行的。
 
 #### 方法二：使用[WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge)
 
